@@ -6,7 +6,7 @@ int getRandom(int min, int max) {
     return random() % (max + 1 - min) + min;
 }
 
-int showArray(int arr[], int size) {
+void showArray(int arr[], int size) {
     for(int i = 0; i < size; i++) {
         printf("%d ", arr[i]);
     }
