@@ -14,7 +14,9 @@ void showArray(int arr[], int size) {
 }
 
 int* createArray(int size, int min, int max) {
+
     int *ptr = (int*)malloc(size * sizeof(int));
+
     for(int i = 0; i < size; i++) {
         ptr[i] = getRandom(min, max);
     }
