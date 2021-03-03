@@ -3,6 +3,7 @@
 #include <time.h>
 #include "qsort.h"
 #include "functions.h"
+#include "qsort-thread.h"
 
 
 int main(int argc, char *argv[]) {
@@ -19,7 +20,9 @@ int main(int argc, char *argv[]) {
 
     showArray(arr, size);
 
-    quickSort(arr, 0, size-1);
+    // quickSort(arr, 0, size-1);
+    threadArgs args = {arr, 0, size-1};
+    quickSortThread((void*) &args);
 
     showArray(arr, size);
 
