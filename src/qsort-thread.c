@@ -5,20 +5,28 @@
 void* quickSortThread(void* args) {
     threadArgs *arguments = (threadArgs*) args;
     int *a = arguments->arr;
-    int p = arguments->p, r = arguments->r;
+    int p = arguments->p, r = arguments->r, level = arguments->level;
     if(p < r) {
-        int q = partition(a, p, r);
+        if(level-- > 0) {
+            int q = partition(a, p, r);
 
-        pthread_t thread;
-        // quickSort(a, p, q-1);
-        threadArgs args1 = {a, p, q-1}, args2 = {a, q+1, r};
-    
-        pthread_create(&thread, NULL, &quickSortThread, (void*)&args1);
+            pthread_t thread;
 
-        quickSortThread((void*) &args2);
+            threadArgs args1 = {a, p, q-1, level}, args2 = {a, q+1, r, level};
+        
+            pthread_create(&thread, NULL, &quickSortThread, (void*)&args1);
 
-        pthread_join(thread, NULL);
+            quickSortThread((void*) &args2);
+
+            pthread_join(thread, NULL);
+        }
+        else {
+            int q = partition(a, p, r);
+
+            quickSort(a, p, q-1);
+            quickSort(a, q+1, r);
+        }
     }
 
-    return 0;
+    return NULL;
 }
