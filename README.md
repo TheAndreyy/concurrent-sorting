@@ -5,7 +5,7 @@ This project is a comparison between normal implementation of quick sort and qui
 ### How to run a program
 To run a program pass 2 argument:
 1. As first argument size of an array
-2. As second argument at with recursion level Quick Sort should stop calling itself pararell
+2. As second argument at with recursion level Quick Sort should stop calling itself pararelly
 3. In the future there will be flags to specify oprions
 
 Example:
