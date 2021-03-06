@@ -32,6 +32,16 @@ int* createArray(int size, int min, int max) {
     return ptr;
 }
 
+int* copyArrayToSharedMemory(int *a, int size) {
+    int protection = PROT_READ | PROT_WRITE;
+    int visibility = MAP_SHARED | MAP_ANONYMOUS;
+    int *arr = (int*) mmap(NULL, size * sizeof(int), protection, visibility, -1, 0);
+
+    memcpy(arr, a, size * sizeof(int));
+
+    return arr;
+}
+
 long long qsortRun(int *a, int size) {
     int *arr = (int*) malloc(size * sizeof(int));
     memcpy(arr, a, size * sizeof(int));
@@ -77,11 +87,7 @@ long long qsortThreadRun(int *a, int size, int level) {
 
 long long qsortProcessRun(int *a, int size, int level) {
 
-    int protection = PROT_READ | PROT_WRITE;
-    int visibility = MAP_SHARED | MAP_ANONYMOUS;
-    int *arr = (int*) mmap(NULL, size * sizeof(int), protection, visibility, -1, 0);
-
-    memcpy(arr, a, size * sizeof(int));
+    int *arr = copyArrayToSharedMemory(a, size);
 
     struct timeval start, end;
 
@@ -101,11 +107,7 @@ long long qsortProcessRun(int *a, int size, int level) {
 
 long long qsortConcurrentRun(int *a, int size, int procLvl, int threadLvl) {
 
-    int protection = PROT_READ | PROT_WRITE;
-    int visibility = MAP_SHARED | MAP_ANONYMOUS;
-    int *arr = (int*) mmap(NULL, size * sizeof(int), protection, visibility, -1, 0);
-
-    memcpy(arr, a, size * sizeof(int));
+    int *arr = copyArrayToSharedMemory(a, size);
 
     struct timeval start, end;
 
