@@ -8,6 +8,7 @@
 #include "functions.h"
 #include "qsort-thread.h"
 #include "qsort-process.h"
+#include "qsort-concurrent.h"
 
 
 int getRandom(int min, int max) {
@@ -87,6 +88,30 @@ long long qsortProcessRun(int *a, int size, int level) {
     gettimeofday(&start, NULL);
 
     quickSortProcess(arr, 0, size-1, level);
+
+    gettimeofday(&end, NULL);
+
+    long long seconds = (end.tv_sec - start.tv_sec);
+    long long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
+
+    munmap(arr, size);
+
+    return micros;
+}
+
+long long qsortConcurrentRun(int *a, int size, int procLvl, int threadLvl) {
+
+    int protection = PROT_READ | PROT_WRITE;
+    int visibility = MAP_SHARED | MAP_ANONYMOUS;
+    int *arr = (int*) mmap(NULL, size * sizeof(int), protection, visibility, -1, 0);
+
+    memcpy(arr, a, size * sizeof(int));
+
+    struct timeval start, end;
+
+    gettimeofday(&start, NULL);
+
+    quickSortConcurrent(arr, 0, size-1, procLvl, threadLvl);
 
     gettimeofday(&end, NULL);
 
