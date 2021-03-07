@@ -4,7 +4,7 @@
 
 #include "functions.h"
 
-// -s -r -t -p -c
+
 int main(int argc, char *argv[]) {
     
     srand(time(NULL));
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 
                     break;
                 default:
-                    printf("Cannot distinquish an operatnion\n");
+                    printf("Cannot distinquish an operatnion \"%s\"\n", argv[i]);
             }
         }
     }
