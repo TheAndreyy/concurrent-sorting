@@ -6,24 +6,81 @@
 
 
 int main(int argc, char *argv[]) {
-    if(argc != 4) {
-        printf("Error: Enter two arguments size of an array and at which recursion level to stop calling new threads\n");
-        exit(-1);
-    }
-
+    
     srand(time(NULL));
 
-    int size = atoi(argv[1]);
+    int size = 0, *arr = NULL, threadLvl, procLvl;
 
-    int *arr = createArray(size, 0, 100*size);
+    for(int i = 1; i < argc; i++) {
+        if(argv[i][0] == '-') {
+            switch(argv[i][1]) {
+                case 's':
+                    size = atoi(argv[++i]);
+                    if(size <= 0) {
+                        printf("Array size should be an integer bigger then 0, not \"%s\"\n", argv[i]);
+                        exit(1);
+                    }
+                    arr = createArray(size, 0, size*100);
+                    break;
+                case 'r':
+                    if(arr == NULL) {
+                        printf("Array is not initializet yet\n");
+                        exit(1);
+                    }
+                    printf("Time for Quick Sort: %lld us\n", 
+                        qsortRun(arr, size));
 
+                    break;
+                case 't':
+                    threadLvl = atoi(argv[++i]);
+                    if(threadLvl <= 0) {
+                        printf("Thread level should be an integer bigger then 0, not \"%s\"\n", argv[i]);
+                        exit(2);
+                    }
+                    if(arr == NULL) {
+                        printf("Array is not initializet yet\n");
+                        exit(1);
+                    }
+                    printf("Time for Quick Sort with threads: %lld us\n", 
+                        qsortThreadRun(arr, size, threadLvl));
 
-    printf("Time for Quick Sort: %lld us\n", qsortRun(arr, size));
+                    break;
+                case 'p':
+                    procLvl = atoi(argv[++i]);
+                    if(procLvl <= 0) {
+                        printf("Process level should be an integer bigger then 0, not \"%s\"\n", argv[i]);
+                        exit(3);
+                    }
+                    if(arr == NULL) {
+                        printf("Array is not initializet yet\n");
+                        exit(1);
+                    }
+                    printf("Time for Quick Sort with processes: %lld us\n", 
+                        qsortProcessRun(arr, size, procLvl));
 
-    printf("Time for Quick Sort with threads: %lld us\n", qsortThreadRun(arr, size, atoi(argv[3])));
+                    break;
+                case 'c':
+                    procLvl = atoi(argv[++i]);
+                    if(procLvl <= 0) {
+                        printf("Process level should be an integer bigger then 0, not \"%s\"\n", argv[i]);
+                        exit(3);
+                    }
+                    threadLvl = atoi(argv[++i]);
+                    if(threadLvl <= 0) {
+                        printf("Thread level should be an integer bigger then 0, not \"%s\"\n", argv[i]);
+                        exit(2);
+                    }
+                    if(arr == NULL) {
+                        printf("Array is not initializet yet\n");
+                        exit(1);
+                    }
+                    printf("Time for Quick Sort with processes and threads: %lld us\n", 
+                        qsortConcurrentRun(arr, size, procLvl, threadLvl));
 
-    printf("Time for Quick Sort with processes: %lld us\n", qsortProcessRun(arr, size, atoi(argv[2])));
-
-    printf("Time for Quick Sort with processes and threads: %lld us\n", qsortConcurrentRun(arr, size, atoi(argv[2]), atoi(argv[3])));
-
+                    break;
+                default:
+                    printf("Cannot distinquish an operatnion \"%s\"\n", argv[i]);
+            }
+        }
+    }
 }

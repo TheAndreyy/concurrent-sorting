@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include "qsort-process.h"
+#include <pthread.h>
+#include "qsort.h"
 #include "qsort-thread.h"
 
 
@@ -13,11 +14,11 @@ void quickSortConcurrent(int *a, int p, int r, int procLvl, int threadLvl) {
         if(procLvl-- > 0) {
             pid_t pid;
             if((pid = fork()) == 0) {
-                quickSortProcess(a, p, q-1, procLvl);
+                quickSortConcurrent(a, p, q-1, procLvl, threadLvl);
                 exit(0);
             }
             else if(pid > 0) {
-                quickSortProcess(a, q+1, r, procLvl);
+                quickSortConcurrent(a, q+1, r, procLvl, threadLvl);
 
                 int childStatus;
                 wait(&childStatus);
