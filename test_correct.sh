@@ -14,7 +14,7 @@ file4="output/resault4"
 # size of an array to sort
 size=10000000
 # set the same seed for every sorting technique
-seed=77777
+seed=$RANDOM
 
 echo "Running every sorting technique..."
 
