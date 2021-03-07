@@ -5,13 +5,14 @@
 # that printf isn't printing and error because of , instead . for decimal places
 export LC_NUMERIC="en_US.UTF-8"
 
+
+# Constants
 program="output/main"
 
-size=10000000
+size=10000000   # size of an array to sort
+n=2             # trial number
 
-sum=0
-n=2
-
+echo
 echo "Normal quick sort"
 
 for((i=0; i<n; i++));
@@ -20,10 +21,11 @@ do
 done
 
 printf "%.3f\n" $(echo "$sum / 1000 / $n" | bc -l)
-echo
 
-echo "Recurrency level to stop..."
-echo "multithreading_level time"
+
+echo
+echo "Recurrency level to stop multithreading"
+echo "thread_rec_lvl time"
 echo
 
 for lvl in {1..15}
@@ -39,7 +41,10 @@ do
     printf "%d %.3f\n" $lvl $(echo "$sum / 1000 / $n" | bc -l)
 done
 
-echo "multiprocessing_level time"
+
+echo
+echo "Recurrency level to stop multiprocessing"
+echo "proc_rec_lvl time"
 echo
 
 for lvl in {1..15}
@@ -54,12 +59,13 @@ do
 
     printf "%d %.3f\n" $lvl $(echo "$sum / 1000 / $n" | bc -l)
 done
+
+
 echo
-
 echo "Concurrent sorting"
-echo "Recurrency level to stop: "
-echo "multiprocesing_level multithreading_level time"
-
+echo "Recurrency level to stop multiprocessing and multithreading"
+echo "proc_rec_lvl thread_rec_lvl time"
+echo
 
 for lvl in {2..15}
 do
@@ -71,7 +77,7 @@ do
         do
             ((sum+=$(./$program -s $size -c $plvl $((lvl-plvl)))))
         done
-        printf "%d %d %.3f\n" $plvl $((lvl-plvl)) $(echo "$sum / 1000 / $n" | bc -l)
+        printf "%d %d %.3f\n" $plvl $plvl $((lvl-plvl)) $(echo "$sum / 1000 / $n" | bc -l)
 
     done
     echo
