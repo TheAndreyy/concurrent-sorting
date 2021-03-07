@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include <sys/time.h>
 #include <sys/mman.h>
 
@@ -42,7 +43,7 @@ int* copyArrayToSharedMemory(int *a, int size) {
     return arr;
 }
 
-long long qsortRun(int *a, int size) {
+long long qsortRun(int *a, int size, bool show) {
     int *arr = (int*) malloc(size * sizeof(int));
     memcpy(arr, a, size * sizeof(int));
 
@@ -57,12 +58,15 @@ long long qsortRun(int *a, int size) {
     long long seconds = (end.tv_sec - start.tv_sec);
     long long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
 
+    if(show)
+        showArray(arr, size);
+
     free(arr);
 
     return micros;
 }
 
-long long qsortThreadRun(int *a, int size, int level) {
+long long qsortThreadRun(int *a, int size, int level, bool show) {
 
     int *arr = (int*) malloc(size * sizeof(int));
     memcpy(arr, a, size * sizeof(int));
@@ -80,12 +84,15 @@ long long qsortThreadRun(int *a, int size, int level) {
     long long seconds = (end.tv_sec - start.tv_sec);
     long long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
 
+    if(show)
+        showArray(arr, size);
+
     free(arr);
 
     return micros;
 }
 
-long long qsortProcessRun(int *a, int size, int level) {
+long long qsortProcessRun(int *a, int size, int level, bool show) {
 
     int *arr = copyArrayToSharedMemory(a, size);
 
@@ -100,12 +107,15 @@ long long qsortProcessRun(int *a, int size, int level) {
     long long seconds = (end.tv_sec - start.tv_sec);
     long long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
 
+    if(show)
+        showArray(arr, size);
+
     munmap(arr, size);
 
     return micros;
 }
 
-long long qsortConcurrentRun(int *a, int size, int procLvl, int threadLvl) {
+long long qsortConcurrentRun(int *a, int size, int procLvl, int threadLvl, bool show) {
 
     int *arr = copyArrayToSharedMemory(a, size);
 
@@ -119,6 +129,9 @@ long long qsortConcurrentRun(int *a, int size, int procLvl, int threadLvl) {
 
     long long seconds = (end.tv_sec - start.tv_sec);
     long long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
+
+    if(show)
+        showArray(arr, size);
 
     munmap(arr, size);
 
