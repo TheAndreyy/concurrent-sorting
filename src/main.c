@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdbool.h>
 
 #include "functions.h"
 
@@ -10,10 +11,15 @@ int main(int argc, char *argv[]) {
     srand(time(NULL));
 
     int size = 0, *arr = NULL, threadLvl, procLvl;
+    bool info = false;
+    long long answer;
 
     for(int i = 1; i < argc; i++) {
         if(argv[i][0] == '-') {
             switch(argv[i][1]) {
+                case 'i':
+                    info = true;
+                    break;
                 case 's':
                     size = atoi(argv[++i]);
                     if(size <= 0) {
@@ -27,8 +33,13 @@ int main(int argc, char *argv[]) {
                         printf("Array is not initialized yet\n");
                         exit(1);
                     }
-                    printf("Time for Quick Sort: %lld us\n", 
-                        qsortRun(arr, size));
+                    answer = qsortRun(arr, size);
+                    if(info)
+                        printf("Time for Quick Sort: %lld us\n", answer);
+                    else {
+                        printf("%lld ", answer);
+                        fflush(stdout);
+                    }
 
                     break;
                 case 't':
@@ -41,8 +52,13 @@ int main(int argc, char *argv[]) {
                         printf("Array is not initialized yet\n");
                         exit(1);
                     }
-                    printf("Time for Quick Sort with threads: %lld us\n", 
-                        qsortThreadRun(arr, size, threadLvl));
+                    answer = qsortThreadRun(arr, size, threadLvl);
+                    if(info)
+                        printf("Time for Quick Sort with threads: %lld us\n", answer);
+                    else {
+                    printf("%lld ", answer);
+                    fflush(stdout);
+                    }
 
                     break;
                 case 'p':
@@ -55,8 +71,13 @@ int main(int argc, char *argv[]) {
                         printf("Array is not initialized yet\n");
                         exit(1);
                     }
-                    printf("Time for Quick Sort with processes: %lld us\n", 
-                        qsortProcessRun(arr, size, procLvl));
+                    answer = qsortProcessRun(arr, size, procLvl);
+                    if(info)
+                        printf("Time for Quick Sort with processes: %lld us\n", qsortProcessRun(arr, size, procLvl));
+                    else {
+                        printf("%lld ", answer);
+                        fflush(stdout);
+                    }
 
                     break;
                 case 'c':
@@ -74,8 +95,13 @@ int main(int argc, char *argv[]) {
                         printf("Array is not initialized yet\n");
                         exit(1);
                     }
-                    printf("Time for Quick Sort with processes and threads: %lld us\n", 
-                        qsortConcurrentRun(arr, size, procLvl, threadLvl));
+                    answer = qsortConcurrentRun(arr, size, procLvl, threadLvl);
+                    if(info)
+                        printf("Time for Quick Sort with processes and threads: %lld us\n", qsortConcurrentRun(arr, size, procLvl, threadLvl));
+                    else {
+                        printf("%lld ", answer);
+                        fflush(stdout);
+                    }
 
                     break;
                 default:
@@ -83,4 +109,6 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    if(!info)
+        printf("\n");
 }
