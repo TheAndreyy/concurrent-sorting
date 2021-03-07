@@ -10,23 +10,24 @@ program="output/main"
 size=10000000
 
 sum=0
-n=1
+n=2
 
 echo "Normal quick sort"
 
 for((i=0; i<n; i++));
 do
-    ((sum+=$(./$program -a 1337 -s $size -r)))
-    # echo "$i $sum"
+    ((sum+=$(./$program -s $size -r)))
 done
 
-printf "%.3f\n" $(echo "$sum / $n" | bc -l)
+printf "%.3f\n" $(echo "$sum / 1000 / $n" | bc -l)
+echo
 
 echo "Recurrency level to stop..."
+echo "multithreading_level time"
+echo
 
 for lvl in {1..15}
 do
-    echo "multithreading $lvl"
 
     sum=0
 
@@ -35,9 +36,14 @@ do
         ((sum+=$(./$program -s $size -t $lvl)))
     done
 
-    printf "%.3f\n" $(echo "$sum / $n" | bc -l)
+    printf "%d %.3f\n" $lvl $(echo "$sum / 1000 / $n" | bc -l)
+done
 
-    echo "multithreading $lvl"
+echo "multiprocessing_level time"
+echo
+
+for lvl in {1..15}
+do
 
     sum=0
 
@@ -46,28 +52,28 @@ do
         ((sum+=$(./$program -s $size -p $lvl)))
     done
 
-    printf "%.3f\n" $(echo "$sum / $n" | bc -l)
-
+    printf "%d %.3f\n" $lvl $(echo "$sum / 1000 / $n" | bc -l)
 done
-
+echo
 
 echo "Concurrent sorting"
-echo "Recurrency level to stop"
+echo "Recurrency level to stop: "
+echo "multiprocesing_level multithreading_level time"
+
 
 for lvl in {2..15}
 do
 
     for((plvl=1; plvl<lvl; plvl++));
     do
-        echo "multiprocesing $plvl multithreading $((lvl-plvl))"
-
         sum=0
         for((i=0; i<n; i++));
         do
             ((sum+=$(./$program -s $size -c $plvl $((lvl-plvl)))))
         done
-        printf "%.3f\n" $(echo "$sum / $n" | bc -l)
+        printf "%d %d %.3f\n" $plvl $((lvl-plvl)) $(echo "$sum / 1000 / $n" | bc -l)
 
     done
+    echo
 
 done
