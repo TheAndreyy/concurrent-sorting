@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
                     break;
                 case 'r':
                     if(arr == NULL) {
-                        printf("Array is not initializet yet\n");
+                        printf("Array is not initialized yet\n");
                         exit(1);
                     }
                     printf("Time for Quick Sort: %lld us\n", 
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
                         exit(2);
                     }
                     if(arr == NULL) {
-                        printf("Array is not initializet yet\n");
+                        printf("Array is not initialized yet\n");
                         exit(1);
                     }
                     printf("Time for Quick Sort with threads: %lld us\n", 
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
                         exit(3);
                     }
                     if(arr == NULL) {
-                        printf("Array is not initializet yet\n");
+                        printf("Array is not initialized yet\n");
                         exit(1);
                     }
                     printf("Time for Quick Sort with processes: %lld us\n", 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
                         exit(2);
                     }
                     if(arr == NULL) {
-                        printf("Array is not initializet yet\n");
+                        printf("Array is not initialized yet\n");
                         exit(1);
                     }
                     printf("Time for Quick Sort with processes and threads: %lld us\n", 
