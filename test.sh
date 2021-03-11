@@ -4,6 +4,7 @@
 
 # that printf isn't printing and error because of , instead . for decimal places
 export LC_NUMERIC="en_US.UTF-8"
+tabs 4                           # set tab to be 4 spaces
 
 
 # Constants
@@ -46,7 +47,7 @@ do
             ((sum+=$(./$program -s $size -t $lvl)))
         done
 
-        printf "%d %.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
+        printf "%d\t%.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
     done
 
 
@@ -65,7 +66,7 @@ do
             ((sum+=$(./$program -s $size -p $lvl)))
         done
 
-        printf "%d %.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
+        printf "%d\t%.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
     done
 
 
@@ -74,11 +75,17 @@ do
     echo "Recurrency level to stop multiprocessing and multithreading"
     echo "proc_rec_lvl thread_rec_lvl time"
     echo
-    echo -e "nProc/nThread\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14\n"
+
+    echo -n -e "nProc/nThreads\t"
+    for i in {1..14}
+    do
+        echo -n -e "$i\t\t"
+    done
+    echo
 
     for nProc in {1..14}
     do
-        echo -n -e "\t$nProc"
+        echo -n -e "\t\t$nProc\t"
         nThread=1
         while [ $((nProc+nThread)) -le 15 ]
         do
@@ -94,3 +101,6 @@ do
 
     done
 done
+
+echo
+tabs -8
