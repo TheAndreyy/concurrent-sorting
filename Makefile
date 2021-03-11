@@ -1,6 +1,7 @@
 #
 # 'make'        build executable file 'main'
 # 'make clean'  removes all .o and executable files
+# 'make tidy' removes all .o files
 #
 
 # define the C compiler to use
