@@ -11,7 +11,7 @@ void quickSortConcurrent(int *a, int p, int r, int procLvl, int threadLvl) {
     if(p < r) {
         int q = partition(a, p, r);
 
-        if(procLvl-- > 0) {
+        if(procLvl-- > 0) {                             // if procLvl is 0 stop calling new processes and start calling threads
             pid_t pid;
             if((pid = fork()) == 0) {
                 quickSortConcurrent(a, p, q-1, procLvl, threadLvl);

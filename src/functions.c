@@ -44,10 +44,11 @@ int* copyArrayToSharedMemory(int *a, int size) {
 }
 
 long long qsortRun(int *a, int size, bool show) {
-    int *arr = (int*) malloc(size * sizeof(int));
-    memcpy(arr, a, size * sizeof(int));
 
-    struct timeval start, end;
+    int *arr = (int*) malloc(size * sizeof(int));
+    memcpy(arr, a, size * sizeof(int));     // sorting copy of an array
+
+    struct timeval start, end;              // to measure time of sorting
 
     gettimeofday(&start, NULL);
 
@@ -71,9 +72,9 @@ long long qsortThreadRun(int *a, int size, int level, bool show) {
     int *arr = (int*) malloc(size * sizeof(int));
     memcpy(arr, a, size * sizeof(int));
 
-    struct timeval start, end;
+    struct timeval start, end;                      // measure time of sorting
 
-    threadArgs args = {arr, 0, size-1, level};
+    threadArgs args = {arr, 0, size-1, level};      // arguments to threads are passed as threadArgs
 
     gettimeofday(&start, NULL);
 
@@ -94,9 +95,9 @@ long long qsortThreadRun(int *a, int size, int level, bool show) {
 
 long long qsortProcessRun(int *a, int size, int level, bool show) {
 
-    int *arr = copyArrayToSharedMemory(a, size);
+    int *arr = copyArrayToSharedMemory(a, size);    // array has to me in shared mmeory so processes see it
 
-    struct timeval start, end;
+    struct timeval start, end;                      // to measure time of sorting
 
     gettimeofday(&start, NULL);
 
@@ -110,16 +111,16 @@ long long qsortProcessRun(int *a, int size, int level, bool show) {
     if(show)
         showArray(arr, size);
 
-    munmap(arr, size);
+    munmap(arr, size);                              // to free shared memory
 
     return micros;
 }
 
 long long qsortConcurrentRun(int *a, int size, int procLvl, int threadLvl, bool show) {
 
-    int *arr = copyArrayToSharedMemory(a, size);
+    int *arr = copyArrayToSharedMemory(a, size);    // array has to me in shared mmeory so processes see it
 
-    struct timeval start, end;
+    struct timeval start, end;                      // to measure time of sorting
 
     gettimeofday(&start, NULL);
 
@@ -133,7 +134,7 @@ long long qsortConcurrentRun(int *a, int size, int procLvl, int threadLvl, bool 
     if(show)
         showArray(arr, size);
 
-    munmap(arr, size);
+    munmap(arr, size);                              // to free shared memory
 
     return micros;
 }

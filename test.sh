@@ -11,6 +11,8 @@ program="output/main"
 
 # size=10000      # size of an array to sort
 n=10            # trial number
+# tests are repeatet n times to get average of tests
+# [n should be at least 25 but tests are taking too long]
 
 for size in 10000 100000 1000000 10000000
 do
