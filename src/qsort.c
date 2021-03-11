@@ -9,7 +9,7 @@ void quickSort(int a[], int p, int r) {
 }
 
 int partition(int a[], int p, int r) {
-    int x = a[r];
+    int x = a[r];                   // split array by last element
     int i = p - 1;
     for(int j = p; j < r; j++) {
         if(a[j] <= x) {

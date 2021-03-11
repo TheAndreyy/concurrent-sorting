@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Script that check if algorithms sort correctly - the same as classical quick sort
+# Programs save sorted arrays to a file then hash of these files are compared
+# if hash is the same algorithms work properly (for sha256 conflicts are quite rare)
 
 # name of a program to run
 program="output/main"
@@ -35,4 +37,5 @@ echo "Comparing resaults of sorting for every algorithm"
 
 shasum -a 256 $file1 $file2 $file3 $file4
 
+# removing files with output
 rm $file1 $file2 $file3 $file4

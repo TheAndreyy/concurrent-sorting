@@ -18,13 +18,13 @@ int main(int argc, char *argv[]) {
     for(int i = 1; i < argc; i++) {
         if(argv[i][0] == '-') {
             switch(argv[i][1]) {
-                case 'i':
+                case 'i':                           // show resaults with whole message
                     info = true;
                     break;
-                case 'w':
+                case 'w':                           // print sorted array
                     show = true;
                     break;
-                case 'a':
+                case 'a':                           // set seed for random number generator
                     seed = atoi(argv[++i]);
                     if(seed <= 0) {
                         printf("Seed should be an integer bigger then 0, not \"%s\"\n", argv[i]);
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
                     }
                     srand(seed);
                     break;
-                case 's':
+                case 's':                           // set size of an array and create it
                     size = atoi(argv[++i]);
                     if(size <= 0) {
                         printf("Array size should be an integer bigger then 0, not \"%s\"\n", argv[i]);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
                     if(show)
                         showArray(arr, size);
                     break;
-                case 'r':
+                case 'r':                           // run normal quick sort
                     if(arr == NULL) {
                         printf("Array is not initialized yet\n");
                         exit(1);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
                     }
 
                     break;
-                case 't':
+                case 't':                           // run quick sort with threads
                     threadLvl = atoi(argv[++i]);
                     if(threadLvl <= 0) {
                         printf("Thread level should be an integer bigger then 0, not \"%s\"\n", argv[i]);
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
                     }
 
                     break;
-                case 'p':
+                case 'p':                           // run quick sort with processes
                     procLvl = atoi(argv[++i]);
                     if(procLvl <= 0) {
                         printf("Process level should be an integer bigger then 0, not \"%s\"\n", argv[i]);
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
                     }
 
                     break;
-                case 'c':
+                case 'c':                           // run quick sort with processes and threads
                     procLvl = atoi(argv[++i]);
                     if(procLvl <= 0) {
                         printf("Process level should be an integer bigger then 0, not \"%s\"\n", argv[i]);
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
 
                     break;
                 default:
-                    printf("Cannot distinquish an operatnion \"%s\"\n", argv[i]);
+                    printf("Cannot distinguish an operatnion \"%s\"\n", argv[i]);
             }
         }
     }
