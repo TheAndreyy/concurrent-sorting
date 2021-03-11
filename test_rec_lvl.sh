@@ -9,7 +9,7 @@ export LC_NUMERIC="en_US.UTF-8"
 # Constants
 program="output/main"
 
-size=100000000  # size of an array to sort
+size=10000      # size of an array to sort
 n=10            # trial number
 
 
@@ -71,19 +71,21 @@ echo "Concurrent sorting"
 echo "Recurrency level to stop multiprocessing and multithreading"
 echo "proc_rec_lvl thread_rec_lvl time"
 echo
+echo -e "nProc/nThread\t1\t2\t3\t4\t5\t6\t7\t8\t9\t10\t11\t12\t13\t14\n"
 
-for lvl in {2..15}
+for nProc in {1..14}
 do
-
-    for((plvl=1; plvl<lvl; plvl++));
+    echo -n -e "\t$nProc"
+    nThread=1
+    while [ $((nProc+nThread)) -le 15 ]
     do
         sum=0
         for((i=0; i<n; i++));
         do
-            ((sum+=$(./$program -s $size -c $plvl $((lvl-plvl)))))
+            ((sum+=$(./$program -s $size -c $nProc $nThread)))
         done
-        printf "%d %d %.3f\n" $plvl $((lvl-plvl)) $(echo "$sum / 1000000 / $n" | bc -l)
-
+        printf "\t%.3f" $(echo "$sum / 1000000 / $n" | bc -l)
+        ((nThread++))
     done
     echo
 
