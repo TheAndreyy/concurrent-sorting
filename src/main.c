@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     for(int i = 1; i < argc; i++) {
         if(argv[i][0] == '-') {
             switch(argv[i][1]) {
-                case 'i':                           // show resaults with whole message
+                case 'i':                           // show results with whole message
                     info = true;
                     break;
                 case 'w':                           // print sorted array

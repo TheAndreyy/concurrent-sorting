@@ -8,10 +8,10 @@
 program="output/main"
 
 # files to save output of a program
-file1="output/resault1"
-file2="output/resault2"
-file3="output/resault3"
-file4="output/resault4"
+file1="output/resalt1"
+file2="output/resalt2"
+file3="output/resalt3"
+file4="output/resalt4"
 
 # size of an array to sort
 size=10000000
@@ -33,7 +33,7 @@ echo "Running every sorting technique..."
 ./$program -a $seed -s $size -w -c 2 2 > $file4
 
 
-echo "Comparing resaults of sorting for every algorithm"
+echo "Comparing results of sorting for every algorithm"
 
 shasum -a 256 $file1 $file2 $file3 $file4
 
