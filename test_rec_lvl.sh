@@ -9,83 +9,82 @@ export LC_NUMERIC="en_US.UTF-8"
 # Constants
 program="output/main"
 
-# size=10000000   # size of an array to sort
+size=100000000  # size of an array to sort
 n=10            # trial number
 
-for size in 1000 10000 10000 100000 1000000 1000000
+
+echo
 echo "Array size $size"
 echo
 
+echo
+echo "Normal quick sort"
+
+for((i=0; i<n; i++));
 do
-    echo
-    echo "Normal quick sort"
+    ((sum+=$(./$program -s $size -r)))
+done
+
+printf "%.3f\n" $(echo "$sum / 1000000 / $n" | bc -l)
+
+
+echo
+echo "Recurrency level to stop multithreading"
+echo "thread_rec_lvl time"
+echo
+
+for lvl in {1..15}
+do
+
+    sum=0
 
     for((i=0; i<n; i++));
     do
-        ((sum+=$(./$program -s $size -r)))
+        ((sum+=$(./$program -s $size -t $lvl)))
     done
 
-    printf "%.3f\n" $(echo "$sum / 1000000 / $n" | bc -l)
+    printf "%d %.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
+done
 
 
-    echo
-    echo "Recurrency level to stop multithreading"
-    echo "thread_rec_lvl time"
-    echo
+echo
+echo "Recurrency level to stop multiprocessing"
+echo "proc_rec_lvl time"
+echo
 
-    for lvl in {1..15}
+for lvl in {1..15}
+do
+
+    sum=0
+
+    for((i=0; i<n; i++));
     do
+        ((sum+=$(./$program -s $size -p $lvl)))
+    done
 
+    printf "%d %.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
+done
+
+
+echo
+echo "Concurrent sorting"
+echo "Recurrency level to stop multiprocessing and multithreading"
+echo "proc_rec_lvl thread_rec_lvl time"
+echo
+
+for lvl in {2..15}
+do
+
+    for((plvl=1; plvl<lvl; plvl++));
+    do
         sum=0
-
         for((i=0; i<n; i++));
         do
-            ((sum+=$(./$program -s $size -t $lvl)))
+            ((sum+=$(./$program -s $size -c $plvl $((lvl-plvl)))))
         done
-
-        printf "%d %.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
-    done
-
-
-    echo
-    echo "Recurrency level to stop multiprocessing"
-    echo "proc_rec_lvl time"
-    echo
-
-    for lvl in {1..15}
-    do
-
-        sum=0
-
-        for((i=0; i<n; i++));
-        do
-            ((sum+=$(./$program -s $size -p $lvl)))
-        done
-
-        printf "%d %.3f\n" $lvl $(echo "$sum / 1000000 / $n" | bc -l)
-    done
-
-
-    echo
-    echo "Concurrent sorting"
-    echo "Recurrency level to stop multiprocessing and multithreading"
-    echo "proc_rec_lvl thread_rec_lvl time"
-    echo
-
-    for lvl in {2..15}
-    do
-
-        for((plvl=1; plvl<lvl; plvl++));
-        do
-            sum=0
-            for((i=0; i<n; i++));
-            do
-                ((sum+=$(./$program -s $size -c $plvl $((lvl-plvl)))))
-            done
-            printf "%d %d %.3f\n" $plvl $((lvl-plvl)) $(echo "$sum / 1000000 / $n" | bc -l)
-
-        done
-        echo
+        printf "%d %d %.3f\n" $plvl $((lvl-plvl)) $(echo "$sum / 1000000 / $n" | bc -l)
 
     done
+    echo
+
 done
